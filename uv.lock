@@ -137,7 +137,7 @@ wheels = [
 
 [[package]]
 name = "marimo"
-version = "0.18.1"
+version = "0.18.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -158,9 +158,9 @@ dependencies = [
     { name = "uvicorn" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/7f/f52829ea79397940ed3f763dbbd972cdd1f2bfb2b272ab8c621e501d0a0e/marimo-0.18.1.tar.gz", hash = "sha256:aec2e69851e89386148437d0a29f80c31bc28ab40907757b122d13762ccbbd0e", size = 33551802, upload-time = "2025-11-25T20:43:43.813Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/06/44/af8dfc8c3d2d1275ea9d16783815b72b30f55698aa48c516f1de352953af/marimo-0.18.2.tar.gz", hash = "sha256:bff066b714e758872897a6faeb813ed6ee73c881d0176c02ce08f97c6d8408dc", size = 37842506, upload-time = "2025-12-04T01:08:49.843Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/94/8d/0583330c79d1d95ec50bfb2cfe5270e5fa894296b29ff714b1e21feeebbf/marimo-0.18.1-py3-none-any.whl", hash = "sha256:3a43a6cc3558e0ad9136c6be807ccbdcd72d7d646e4c68111b9c5a87dd7464ee", size = 34071111, upload-time = "2025-11-25T20:43:38.619Z" },
+    { url = "https://files.pythonhosted.org/packages/33/e0/c93f55a9774d8401d7098c9b3ef400d3a942e3f37b3c25ced19a18f7cc0a/marimo-0.18.2-py3-none-any.whl", hash = "sha256:21e415b0ae862d23e2697f4171761d9eb4674295bd472da3f244f649ce90f142", size = 38366135, upload-time = "2025-12-04T01:08:54.256Z" },
 ]
 
 [[package]]
@@ -170,27 +170,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/7d/ab/7dd27d9d863b3376fcf23a5a13cb5d024aed1db46f963f1b5735ae43b3be/markdown-3.10.tar.gz", hash = "sha256:37062d4f2aa4b2b6b32aefb80faa300f82cc790cb949a35b8caede34f2b68c0e", size = 364931, upload-time = "2025-11-03T19:51:15.007Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/70/81/54e3ce63502cd085a0c556652a4e1b919c45a446bd1e5300e10c44c8c521/markdown-3.10-py3-none-any.whl", hash = "sha256:b5b99d6951e2e4948d939255596523444c0e677c669700b1d17aa4a8a464cb7c", size = 107678, upload-time = "2025-11-03T19:51:13.887Z" },
-]
-
-[[package]]
-name = "markdown-it-py"
-version = "4.0.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "mdurl" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/5b/f5/4ec618ed16cc4f8fb3b701563655a69816155e79e24a17b651541804721d/markdown_it_py-4.0.0.tar.gz", hash = "sha256:cb0a2b4aa34f932c007117b194e945bd74e0ec24133ceb5bac59009cda1cb9f3", size = 73070, upload-time = "2025-08-11T12:57:52.854Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/94/54/e7d793b573f298e1c9013b8c4dade17d481164aa517d1d7148619c2cedbf/markdown_it_py-4.0.0-py3-none-any.whl", hash = "sha256:87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147", size = 87321, upload-time = "2025-08-11T12:57:51.923Z" },
-]
-
-[[package]]
-name = "mdurl"
-version = "0.1.2"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
 ]
 
 [[package]]
@@ -226,23 +205,6 @@ wheels = [
 ]
 
 [[package]]
-name = "multithreading-demo"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "marimo" },
-    { name = "pacakge" },
-    { name = "rich" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "marimo", specifier = ">=0.18.1" },
-    { name = "pacakge", specifier = ">=0.0" },
-    { name = "rich", specifier = ">=14.2.0" },
-]
-
-[[package]]
 name = "narwhals"
 version = "2.13.0"
 source = { registry = "https://pypi.org/simple" }
@@ -250,12 +212,6 @@ sdist = { url = "https://files.pythonhosted.org/packages/89/ea/f82ef99ced4d03c33
 wheels = [
     { url = "https://files.pythonhosted.org/packages/87/0d/1861d1599571974b15b025e12b142d8e6b42ad66c8a07a89cb0fc21f1e03/narwhals-2.13.0-py3-none-any.whl", hash = "sha256:9b795523c179ca78204e3be53726da374168f906e38de2ff174c2363baaaf481", size = 426407, upload-time = "2025-12-01T13:54:03.861Z" },
 ]
-
-[[package]]
-name = "pacakge"
-version = "0.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9d/db/e0b38c53554d9552b2566873ecb8803dacd223c115fd46ad97b955426b5c/pacakge-0.0.tar.gz", hash = "sha256:979c3a808ad684f9e39ffc0bb7464f457cb649f744080e47b21b7b18f183c0d8", size = 911, upload-time = "2022-09-20T12:05:25.598Z" }
 
 [[package]]
 name = "packaging"
@@ -324,6 +280,17 @@ wheels = [
 ]
 
 [[package]]
+name = "python-multithreading-demo"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "marimo" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "marimo", specifier = ">=0.18.2" }]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -357,19 +324,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/da/92/1446574745d74df0c92e6aa4a7b0b3130706a4142b2d1a5869f2eaa423c6/pyyaml-6.0.3-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:16249ee61e95f858e83976573de0f5b2893b3677ba71c9dd36b9cf8be9ac6d65", size = 829923, upload-time = "2025-09-25T21:32:54.537Z" },
     { url = "https://files.pythonhosted.org/packages/f0/7a/1c7270340330e575b92f397352af856a8c06f230aa3e76f86b39d01b416a/pyyaml-6.0.3-cp314-cp314t-win_amd64.whl", hash = "sha256:4ad1906908f2f5ae4e5a8ddfce73c320c2a1429ec52eafd27138b7f1cbe341c9", size = 174062, upload-time = "2025-09-25T21:32:55.767Z" },
     { url = "https://files.pythonhosted.org/packages/f1/12/de94a39c2ef588c7e6455cfbe7343d3b2dc9d6b6b2f40c4c6565744c873d/pyyaml-6.0.3-cp314-cp314t-win_arm64.whl", hash = "sha256:ebc55a14a21cb14062aa4162f906cd962b28e2e9ea38f9b4391244cd8de4ae0b", size = 149341, upload-time = "2025-09-25T21:32:56.828Z" },
-]
-
-[[package]]
-name = "rich"
-version = "14.2.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "markdown-it-py" },
-    { name = "pygments" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/fb/d2/8920e102050a0de7bfabeb4c4614a49248cf8d5d7a8d01885fbb24dc767a/rich-14.2.0.tar.gz", hash = "sha256:73ff50c7c0c1c77c8243079283f4edb376f0f6442433aecb8ce7e6d0b92d1fe4", size = 219990, upload-time = "2025-10-09T14:16:53.064Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/7a/b0178788f8dc6cafce37a212c99565fa1fe7872c70c6c9c1e1a372d9d88f/rich-14.2.0-py3-none-any.whl", hash = "sha256:76bc51fe2e57d2b1be1f96c524b890b816e334ab4c1e45888799bfaab0021edd", size = 243393, upload-time = "2025-10-09T14:16:51.245Z" },
 ]
 
 [[package]]

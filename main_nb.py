@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.18.1"
+__generated_with = "0.18.2"
 app = marimo.App()
 
 
@@ -227,7 +227,7 @@ def _(print, random, threading, time):
 
     def update_shared_data():
         global shared_data
-    
+
         temp = shared_data
         # Simulate some computation for each thread
         time.sleep(random.uniform(0,1)) 
@@ -237,7 +237,7 @@ def _(print, random, threading, time):
     threads = [threading.Thread(target=update_shared_data) for _ in range(number_of_threads)]
     for thread in threads:
         thread.start()
-    
+
     for thread in threads:
         thread.join()
 
@@ -271,7 +271,7 @@ def _(print, random, threading, time):
         We ensure that the critical section of code can only be executed by one thread (The one currently holding the lock)
         """
         global locked_shared_data
-   
+
         with mutex: # Thread aquires lock before entering critical section
             temp = locked_shared_data
             time.sleep(random.uniform(0,1))
@@ -280,7 +280,7 @@ def _(print, random, threading, time):
     _threads = [threading.Thread(target=update_locked_shared_data) for _ in range(locked_number_of_threads)]
     for _thread in _threads:
         _thread.start()
-    
+
     for _thread in _threads:
         _thread.join()
 
@@ -330,16 +330,16 @@ def _(Console, mo, threading, time):
     _mutex = [threading.Lock(), threading.Lock(), threading.Lock()] 
 
     def park_car(car_id):
- 
+
         time.sleep(0.1)  # Simulate parking time
         with _mutex[0]:
             _current_cars[0] += 1
-    
+
         if _current_cars[0] > _available_spots[0]:
             with _mutex[2]:
                 _race_condition[0] = True
             _console.print(f"Car {car_id} has entered car park, Cars in car park: {_current_cars[0]}, [red]Car couldn't park no space!!![/red]")
-        
+
         else:
             _console.print(f"Car {car_id} has entered car park, Cars in car park: {_current_cars[0]}, [green]Car is parked[/green]")
 
@@ -397,7 +397,7 @@ def _(Console, mo, threading, time):
         time.sleep(0.1)
         with _mutex[0]:
             _current_cars[0] += 1
-    
+
         if _current_cars[0] > _available_spots[0]:
             with _mutex[2]:
                 _race_condition[0] = True
@@ -408,10 +408,10 @@ def _(Console, mo, threading, time):
         time.sleep(1)
         with _mutex[1]:
             _current_cars[0] -= 1   
-    
+
         # Release a spot: increment semaphore count so another car can enter
         semaphore.release()
-        
+
 
     _threads = []
     for _i in range(10):
@@ -430,6 +430,20 @@ def _(Console, mo, threading, time):
 
     _html = _console.export_html(inline_styles=True)
     mo.Html(_html)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## 0. Multi-threading challanges
+
+    **Deadlocks**
+    explain ...........
+
+    **Starvation**
+    explain............
+    """)
     return
 
 

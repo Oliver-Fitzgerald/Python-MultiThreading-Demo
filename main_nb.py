@@ -292,7 +292,14 @@ def _(print, random, threading, time):
 def _(mo):
     mo.md(r"""
     **Mutexes vs Synchronised Locking**
-    explanation ........................
+
+    Mutexs as already disscussed are a method for thread synchronization. Synchronized Locking is an higher level language abstraction/construct which also acheives mutal exclussion between threads, they are most commonly found in higher level languages notibly java with the synchronized key word and in C# with the lock key word.
+
+    The difference between the two levels of abstraction is primarily the level of granularity with wich you control the lock and unlock mechanisms. When using mutexs you explicitly define the points at which a mutex is locked and unlocked. With synchronized locking you define a method/code block to be synchronized and the release of the lock when exiting the defined scope is handeled automatically even in the case of exceptions. However this is not the only difference between the two with Javas implmentation of synchronized for example using object association rather than OS mutexs under the hood to acheive mutual exclusion and mutexs in lower level languages offering more variants of locks such as timed-locks, read-write locks etc.
+
+    In java the synchronized sections can be used with wait() and notify()/notifyAll() methods when finer control is required, were wait releasing the lock of the current thread and sendign it into a waiting state and were notify or notifyAll will wake up a/all waiting thread(s).
+
+    In python there is not strictly any equivilant to synchronized locking as there is in Java.
     """)
     return
 
@@ -443,31 +450,6 @@ def _(mo):
 
     **Starvation**
     explain............
-    """)
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## 5. Queues
-    """)
-    return
-
-
-@app.cell
-def _(print):
-    print("Queues")
-    return
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## 7. Best Practices
-
-    - Process Pooling
-    - Map function
     """)
     return
 

@@ -9,10 +9,13 @@ def _():
     import marimo as mo
     from rich import print
     from rich.console import Console
+    from PIL import Image
     import threading
     import time
     import random
-    return Console, mo, print, random, threading, time
+    import matplotlib.pyplot as plt
+    from collections import defaultdict
+    return Console, Image, defaultdict, mo, plt, print, random, threading, time
 
 
 @app.cell(hide_code=True)
@@ -169,8 +172,8 @@ def _(mo, threading, time):
     _thread2.start()
 
     # Create both progress bars with context managers
-    with mo.status.progress_bar(total=100, title="Thread-A", subtitle="Counting primes 0-5M") as bar1, \
-         mo.status.progress_bar(total=100, title="Thread-B", subtitle="Counting primes 5M-10M") as bar2:
+    with mo.status.progress_bar(total=100, title="Thread-1", subtitle="Counting primes ...") as bar1, \
+         mo.status.progress_bar(total=100, title="Thread-2", subtitle="Counting primes ...") as bar2:
 
         last_progress1 = 0
         last_progress2 = 0
@@ -443,14 +446,202 @@ def _(Console, mo, threading, time):
 @app.cell(hide_code=True)
 def _(mo):
     mo.md(r"""
-    ## 0. Multi-threading challanges
+    ## 4. Multi-threading challanges
 
     **Deadlocks**
-    explain ...........
-
-    **Starvation**
-    explain............
+    Deadlocks are a common issue that can occur when designing a mult-threaded system. A deadlock occurs when a thread currently holding a lock cannot procced due to a dependency on a resource held by a thread currently waithing for the lock that this thread posses, essentially creating a circular dependency between the two locks.
     """)
+    return
+
+
+@app.cell
+def _(Image):
+    img = Image.open("images/deadlocks-image.jpg")
+    img
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    In the following python cell we will demonstrate how a deadlock may occur.
+    Notice how the threads get stuck attempting to aquire the lock the other thread currently posseses.
+    """)
+    return
+
+
+@app.cell
+def _(Console, mo, threading, time):
+    _console = Console(record=True)
+
+    # Note we use lists as they are immutable
+    _mutex_1 = [threading.Lock()]
+    _mutex_2 = [threading.Lock()]
+
+    def function_one():
+        _console.print(f"{threading.current_thread().name} is [#FFA500]atempting[/#FFA500] to aquire the lock for _mutex_1 ...")
+        _mutex_1[0].acquire()
+        _console.print(f"{threading.current_thread().name} has [green]aquired[/green] _mutex_1")
+
+        _console.print(f"{threading.current_thread().name} is [#FFA500]atempting[/#FFA500] to aquire the lock for _mutex_2 ...")
+        time.sleep(0.5) # Pause thread proccess to ensure deadlock occurs
+
+        timeout = _mutex_2[0].acquire(timeout=10)
+        if timeout:
+            _console.print(f"{threading.current_thread().name} has [green]aquired[/green] _mutex_1")
+            _mutex_2[0].release()
+
+        else:
+            _console.print(f"{threading.current_thread().name} has [red]failed[/red] to aquire _mutex_1")
+
+        time.sleep(5)
+        _mutex_1[0].release()
+
+
+    def function_two():
+        _console.print(f"{threading.current_thread().name} is [#FFA500]attempting[/#FFA500] to aquire the lock for _mutex_2 ...")
+        _mutex_2[0].acquire()
+        _console.print(f"{threading.current_thread().name} has [green]aquired[/green] _mutex_2")
+
+
+        _console.print(f"{threading.current_thread().name} is [#FFA500]atempting[/#FFA500] to aquire the lock for _mutex_1 ...")
+        time.sleep(0.5) # Pause thread proccess to ensure deadlock occurs
+
+        timeout = _mutex_1[0].acquire(timeout=10)
+        if timeout:
+            _console.print(f"{threading.current_thread().name} has [green]aquired[/green] _mutex_1")
+            _mutex_1[0].release()
+
+        else:
+            _console.print(f"{threading.current_thread().name} has [red]failed[/red] to aquire _mutex_1")
+
+
+        time.sleep(5)
+        _mutex_2[0].release()
+
+
+    _thread_1 = threading.Thread(name="Thread-1",target=function_one)
+    _thread_2 = threading.Thread(name="Thread-2",target=function_two)
+
+    _thread_1.start()
+    _thread_2.start()
+    _thread_1.join()
+    _thread_2.join()
+    _html = _console.export_html(inline_styles=True)
+    mo.Html(_html)
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    **Starvation**
+
+    Starvation is another common issue encountered when designing multi-threaded systems. It is defined as a thread being perpetually deprived of resources it needs to execute, even though those resources are available. This issue can be caused in a number of different ways such as poor scheduling, resource hogging or as in the case of the demo below unfair locking i.e one thread repeatedly aquiring a mutex lock.
+    """)
+    return
+
+
+@app.cell
+def _(defaultdict, plt, print, threading, time):
+
+
+    lock = threading.Lock()
+    lock_history = []  # (timestamp, thread_name, event_type)
+    start_time = time.time()
+
+    def greedy_thread(name):
+        """This thread hogs the lock"""
+        count = 0
+        while count < 50:  # Limited iterations for demo
+            lock.acquire()
+            lock_history.append((time.time() - start_time, name, "acquire"))
+            time.sleep(0.01)  # Hold lock briefly
+            lock_history.append((time.time() - start_time, name, "release"))
+            lock.release()
+            count += 1
+
+    def starved_thread(name):
+        """This thread gets starved"""
+        attempt = 0
+        while attempt < 10:
+            lock.acquire()
+            lock_history.append((time.time() - start_time, name, "acquire"))
+            time.sleep(0.01)
+            lock_history.append((time.time() - start_time, name, "release"))
+            lock.release()
+            attempt += 1
+            time.sleep(0.05)
+
+    # Start threads
+    t1 = threading.Thread(target=greedy_thread, args=("Greedy-1",))
+    t2 = threading.Thread(target=greedy_thread, args=("Greedy-2",))
+    t3 = threading.Thread(target=starved_thread, args=("Starved",))
+
+    t1.start()
+    t2.start()
+    time.sleep(0.1)  # Let greedy threads start
+    t3.start()
+
+    # Wait for all threads
+    t1.join()
+    t2.join()
+    t3.join()
+
+    # Process the history to calculate lock hold times
+    thread_times = defaultdict(list)  # {thread_name: [(start, duration), ...]}
+    thread_acquire_times = {}
+
+    for timestamp, thread_name, event_type in lock_history:
+        if event_type == "acquire":
+            thread_acquire_times[thread_name] = timestamp
+        elif event_type == "release" and thread_name in thread_acquire_times:
+            start = thread_acquire_times[thread_name]
+            duration = timestamp - start
+            thread_times[thread_name].append((start, duration))
+            del thread_acquire_times[thread_name]
+
+    # Create visualization
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
+
+    # Timeline visualization
+    colors = {"Greedy-1": "red", "Greedy-2": "orange", "Starved": "blue"}
+    y_positions = {"Greedy-1": 2, "Greedy-2": 1, "Starved": 0}
+
+    for thread_name, intervals in thread_times.items():
+        for start, duration in intervals:
+            ax1.barh(y_positions[thread_name], duration, left=start, 
+                    height=0.8, color=colors[thread_name], alpha=0.7)
+
+    ax1.set_yticks([0, 1, 2])
+    ax1.set_yticklabels(["Starved", "Greedy-2", "Greedy-1"])
+    ax1.set_xlabel("Time (seconds)")
+    ax1.set_title("Thread Lock Acquisition Timeline (Starvation Demo)")
+    ax1.grid(axis='x', alpha=0.3)
+
+    # Total time with lock (bar chart)
+    total_times = {name: sum(d for _, d in intervals) 
+                   for name, intervals in thread_times.items()}
+    lock_counts = {name: len(intervals) for name, intervals in thread_times.items()}
+
+    ax2.bar(total_times.keys(), total_times.values(), 
+            color=[colors[name] for name in total_times.keys()], alpha=0.7)
+    ax2.set_ylabel("Total Time Holding Lock (seconds)")
+    ax2.set_title("Total Lock Hold Time by Thread")
+    ax2.grid(axis='y', alpha=0.3)
+
+    # Add count annotations
+    for name, total in total_times.items():
+        ax2.text(name, total, f'{lock_counts[name]} acquisitions', 
+                ha='center', va='bottom')
+
+    plt.tight_layout()
+    plt.show()
+
+    print(f"\nLock Statistics:")
+    for name in sorted(thread_times.keys()):
+        print(f"{name}: {lock_counts[name]} acquisitions,")
+        print(f"{total_times[name]:.3f}s total time with lock")
     return
 
 
